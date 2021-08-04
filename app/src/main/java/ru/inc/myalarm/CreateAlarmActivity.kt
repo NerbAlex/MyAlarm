@@ -1,11 +1,16 @@
 package ru.inc.myalarm
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import ru.inc.myalarm.databinding.ActivityCreateAlarmBinding
 
 class CreateAlarmActivity : AppCompatActivity() {
+
+    private lateinit var ui: ActivityCreateAlarmBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_create_alarm)
+        ui = ActivityCreateAlarmBinding.inflate(layoutInflater)
+        setContentView(ui.root)
     }
 }
