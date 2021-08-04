@@ -1,4 +1,4 @@
-package ru.inc.myalarm
+package ru.inc.myalarm.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
