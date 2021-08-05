@@ -16,7 +16,11 @@ class MainViewModel : BaseViewModel<AppState.MainViewState>() {
     override fun startViewModel() {
         log.viewModel("startViewModel")
         compositeDisposable.add(repository.getData().subscribe({
-            mutableLiveData.postValue(AppState.MainViewState.Success(it))
+            if (it.isNotEmpty()) {
+                mutableLiveData.postValue(AppState.MainViewState.Success(it))
+            } else {
+                mutableLiveData.postValue(AppState.MainViewState.FirstStart)
+            }
         }, { it.printStackTrace() }))
     }
 }

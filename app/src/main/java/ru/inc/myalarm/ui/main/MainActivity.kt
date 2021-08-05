@@ -3,7 +3,9 @@ package ru.inc.myalarm.ui.main
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import ru.inc.myalarm.R
 import ru.inc.myalarm.databinding.ActivityMainBinding
 import ru.inc.myalarm.model.entity.ConstRepeatStatus
 import ru.inc.myalarm.view_model.AppState
@@ -46,6 +48,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun renderData(state: AppState.MainViewState) {
+        when (state) {
+            is AppState.MainViewState.Success -> {
+                adapter.list = state.list
+            }
 
+            is AppState.MainViewState.FirstStart -> {
+                Toast.makeText(this, getString(R.string.first_start_state), Toast.LENGTH_LONG).show()
+            }
+
+            is AppState.MainViewState.Error -> {
+                Toast.makeText(this, getString(R.string.error_state), Toast.LENGTH_LONG).show()
+            }
+        }
     }
 }

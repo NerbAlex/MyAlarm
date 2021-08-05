@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MyAlarm</string>
+    <string name="error_state">Ошибка получения данных</string>
+    <string name="first_start_state">Добро пожаловать в приложение, создайте задачу</string>
 </resources>
