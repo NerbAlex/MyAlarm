@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import ru.inc.myalarm.R
 import ru.inc.myalarm.databinding.ActivityCreateAlarmBinding
+import ru.inc.myalarm.extensions.lifecycle
 import ru.inc.myalarm.model.entity.room.AlarmRoom
 import ru.inc.myalarm.model.entity.ui.Alarm
 import ru.inc.myalarm.view_model.AppState
@@ -16,6 +17,7 @@ import ru.inc.myalarm.view_model.create.CreateAlarmViewModel
 import ru.inc.myalarm.view_model.main.MainViewModel
 import java.util.*
 import java.util.concurrent.TimeUnit
+import java.util.logging.Logger
 
 class CreateAlarmActivity : AppCompatActivity() {
 
@@ -23,15 +25,16 @@ class CreateAlarmActivity : AppCompatActivity() {
         fun getStartIntent(context: Context): Intent = Intent(context, CreateAlarmActivity::class.java)
     }
 
+    private val log = Logger.getLogger(MainViewModel::class.java.name)
     private lateinit var ui: ActivityCreateAlarmBinding
     private lateinit var viewModel: CreateAlarmViewModel
     private val alarm by lazy { createAlarm() }
     private var date: Long? = null
 
-    private fun createAlarm(): AlarmRoom {
-        return AlarmRoom(
-            name = ui.editTxtTitleAlarm.text.toString(),
-            repeatStatus = ui.ratingBar.rating.toInt(),
+    private fun createAlarm() = with(ui) {
+        AlarmRoom(
+            name = editTxtTitleAlarm.text.toString(),
+            repeatStatus = ratingBar.rating.toInt(),
             date = date ?: Date().time
         )
     }
@@ -57,16 +60,25 @@ class CreateAlarmActivity : AppCompatActivity() {
     }
 
     private fun renderData(state: AppState.CreateAlarmViewState) {
+        when (state) {
+            is AppState.CreateAlarmViewState.AlarmCreated -> finish()
+
+            is AppState.CreateAlarmViewState.Error -> {
+                Toast.makeText(this, getString(R.string.error_state), Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     override fun onBackPressed() {
+        log.lifecycle("onBackPressed")
+
         with(ui) {
             if (date != null && editTxtTitleAlarm.text.isNotEmpty()) {
                 viewModel.createAlarm(alarm)
             } else {
-                Toast
-                    .makeText(this@CreateAlarmActivity, getString(R.string.not_save_task), Toast.LENGTH_LONG)
+                Toast.makeText(this@CreateAlarmActivity, getString(R.string.not_save_task), Toast.LENGTH_LONG)
                     .show()
+
                 super.onBackPressed()
             }
         }
