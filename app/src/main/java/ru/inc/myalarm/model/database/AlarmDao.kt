@@ -2,20 +2,21 @@ package ru.inc.myalarm.model.database
 
 import androidx.room.*
 import io.reactivex.rxjava3.core.Completable
-import ru.inc.myalarm.model.entity.Alarm
+import ru.inc.myalarm.model.entity.room.AlarmRoom
+import ru.inc.myalarm.model.entity.ui.Alarm
 
 @Dao
 interface AlarmDao {
 
-    @Insert(entity = Alarm::class, onConflict = OnConflictStrategy.REPLACE)
-    fun addAlarm(alarm: Alarm): Completable
+    @Insert(entity = AlarmRoom::class, onConflict = OnConflictStrategy.REPLACE)
+    fun addAlarm(alarm: AlarmRoom): Completable
 
-    @Delete(entity = Alarm::class)
-    fun deleteAlarm(alarm: Alarm)
+    @Delete(entity = AlarmRoom::class)
+    fun deleteAlarm(alarm: AlarmRoom)
 
-    @Delete(entity = Alarm::class)
-    fun deleteAllAlarm(alarmList: List<Alarm>)
+    @Delete(entity = AlarmRoom::class)
+    fun deleteAllAlarm(alarmList: List<AlarmRoom>)
 
     @Query("SELECT * FROM alarm_table")
-    fun getAllAlarm(): List<Alarm>
+    fun getAllAlarm(): List<AlarmRoom>
 }

@@ -15,4 +15,6 @@ abstract class BaseViewModel<T : AppState>(
         compositeDisposable.clear()
         super.onCleared()
     }
+
+    open fun startViewModel() {}
 }

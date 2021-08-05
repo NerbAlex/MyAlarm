@@ -1,6 +1,6 @@
 package ru.inc.myalarm.view_model
 
-import ru.inc.myalarm.model.entity.Alarm
+import ru.inc.myalarm.model.entity.ui.Alarm
 
 sealed class AppState {
 

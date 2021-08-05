@@ -2,9 +2,10 @@ package ru.inc.myalarm.model.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import ru.inc.myalarm.model.entity.Alarm
+import ru.inc.myalarm.model.entity.room.AlarmRoom
+import ru.inc.myalarm.model.entity.ui.Alarm
 
-@Database(entities = [Alarm::class], version = 1)
+@Database(entities = [AlarmRoom::class], version = 1)
 abstract class DataBase: RoomDatabase() {
 
     companion object{

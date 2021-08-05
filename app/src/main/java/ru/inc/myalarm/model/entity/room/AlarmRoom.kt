@@ -1,16 +1,13 @@
-package ru.inc.myalarm.model.entity
+package ru.inc.myalarm.model.entity.room
 
-import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlinx.parcelize.Parcelize
 
-@Parcelize
 @Entity(tableName = "alarm_table")
-data class Alarm(
+class AlarmRoom(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
     val name: String,
     val date: Long,
     val repeatStatus: Int
-) : Parcelable
+)

@@ -3,6 +3,7 @@ package ru.inc.myalarm.model.entity
 interface ConstRepeatStatus {
 
     companion object{
+        const val REPEAT_NO = 0
         const val REPEAT_ONE_DAY = 1
         const val REPEAT_ONE_WEAK = 2
         const val REPEAT_ONE_MINUTES = 3
