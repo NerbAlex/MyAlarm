@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.reactivex.rxjava3.disposables.CompositeDisposable
+import ru.inc.myalarm.model.entity.ui.Alarm
 
 abstract class BaseViewModel<T : AppState>(
     protected val mutableLiveData: MutableLiveData<T> = MutableLiveData(),

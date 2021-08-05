@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "alarm_table")
 class AlarmRoom(
     @PrimaryKey(autoGenerate = true)
-    val id: Long,
+    val id: Long = 0,
     val name: String,
     val date: Long,
     val repeatStatus: Int

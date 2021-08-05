@@ -1,6 +1,7 @@
 package ru.inc.myalarm.view_model.main
 
 import ru.inc.myalarm.extensions.viewModel
+import ru.inc.myalarm.model.entity.ui.Alarm
 import ru.inc.myalarm.view_model.AppState
 import ru.inc.myalarm.view_model.BaseViewModel
 import java.util.logging.Logger

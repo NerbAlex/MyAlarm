@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Alarm(
-    val id: Int,
+    var id: Int = 0,
     val name: String,
     val date: String,
     val repeatStatus: String,

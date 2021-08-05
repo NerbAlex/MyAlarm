@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import ru.inc.myalarm.R
 import ru.inc.myalarm.databinding.ActivityMainBinding
 import ru.inc.myalarm.model.entity.ConstRepeatStatus
+import ru.inc.myalarm.ui.create.CreateAlarmActivity
 import ru.inc.myalarm.view_model.AppState
 import ru.inc.myalarm.view_model.main.MainViewModel
 import java.lang.IllegalArgumentException
@@ -25,6 +26,11 @@ class MainActivity : AppCompatActivity() {
 
         initRecyclerView()
         initViewModel()
+        initListeners()
+    }
+
+    private fun initListeners() {
+        ui.btnCreateAlert.setOnClickListener { CreateAlarmActivity.getStartIntent(this) }
     }
 
     @SuppressLint("SetTextI18n")

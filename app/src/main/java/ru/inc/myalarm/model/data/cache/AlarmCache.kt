@@ -1,21 +1,18 @@
 package ru.inc.myalarm.model.data.cache
 
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import ru.inc.myalarm.extensions.toMyFormat
 import ru.inc.myalarm.model.database.DataBase
 import ru.inc.myalarm.model.entity.ConstRepeatStatus
+import ru.inc.myalarm.model.entity.room.AlarmRoom
 import ru.inc.myalarm.model.entity.ui.Alarm
 import ru.inc.myalarm.model.repositories.AlarmLocalDataSource
-import java.lang.IllegalArgumentException
 import java.util.*
 
 
 class AlarmCache(val db: DataBase) : AlarmLocalDataSource {
-
-    //TODO пока просто перегнать лонг дату в стрингу, не использовать TypeConverter, лонг тоже будет нужен для
-    // AlarmManager, так же мапить repeatStatus Int в String, не использовать TypeConverter, т.к. может быть другой Int в сущности
-
 
     override fun getAlarmList(): Single<List<Alarm>> = Single.fromCallable {
         db.alarmDao().getAllAlarm().map { localAlarm ->
@@ -28,6 +25,9 @@ class AlarmCache(val db: DataBase) : AlarmLocalDataSource {
             )
         }
     }.subscribeOn(Schedulers.io())
+
+    override fun saveAlarm(alarm: AlarmRoom): Completable =
+        db.alarmDao().addAlarm(alarm).subscribeOn(Schedulers.io())
 
     private fun mapRepeatStatus(repeatStatus: Int): String = when (repeatStatus) {
         ConstRepeatStatus.REPEAT_NO -> {

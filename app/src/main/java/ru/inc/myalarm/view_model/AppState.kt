@@ -11,6 +11,7 @@ sealed class AppState {
     }
 
     sealed class CreateAlarmViewState: AppState() {
-
+        object AlarmCreated: CreateAlarmViewState()
+        object Error: CreateAlarmViewState()
     }
 }
