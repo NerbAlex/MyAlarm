@@ -1,4 +1,4 @@
-package ru.inc.myalarm.di.module
+package ru.inc.myalarm.di.module.main
 
 import androidx.room.Room
 import dagger.Module

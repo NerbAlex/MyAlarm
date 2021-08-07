@@ -1,5 +1,6 @@
 package ru.inc.myalarm.view_model.create
 
+import ru.inc.myalarm.MyApp
 import ru.inc.myalarm.extensions.viewModel
 import ru.inc.myalarm.model.entity.room.AlarmRoom
 import ru.inc.myalarm.view_model.AppState
@@ -15,6 +16,8 @@ class CreateAlarmViewModel: BaseViewModel<AppState.CreateAlarmViewState>() {
 
     override fun startViewModel() {
         log.viewModel("startViewModel")
+        MyApp.instance.initCreateSubComponent().inject(this)
+
         super.startViewModel()
     }
 
@@ -26,6 +29,11 @@ class CreateAlarmViewModel: BaseViewModel<AppState.CreateAlarmViewState>() {
         }, {
             it.printStackTrace()
         })
+    }
+
+    override fun onCleared() {
+        MyApp.instance.destroyCreateSubComponent()
+        super.onCleared()
     }
 
 }

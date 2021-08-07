@@ -1,6 +1,7 @@
 package ru.inc.myalarm.ui.main
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -30,7 +31,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initListeners() {
-        ui.btnCreateAlert.setOnClickListener { CreateAlarmActivity.getStartIntent(this) }
+        ui.btnCreateAlert.setOnClickListener {
+            startActivity(Intent(this, CreateAlarmActivity::class.java)) }
     }
 
     @SuppressLint("SetTextI18n")

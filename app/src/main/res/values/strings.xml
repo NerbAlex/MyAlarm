@@ -2,5 +2,5 @@
     <string name="app_name">MyAlarm</string>
     <string name="error_state">Ошибка данных</string>
     <string name="first_start_state">Добро пожаловать в приложение, создайте задачу</string>
-    <string name="not_save_task">Заполните не сохранена, заполните все поля</string>
+    <string name="not_save_task">Задача не сохранена, заполните все поля</string>
 </resources>
