@@ -1,3 +1,7 @@
 package ru.inc.myalarm.di.scope
 
-annotation class CreateScope()
+import javax.inject.Scope
+
+@Scope
+@Retention(AnnotationRetention.RUNTIME)
+annotation class CreateScope

@@ -21,10 +21,6 @@ import java.util.logging.Logger
 
 class CreateAlarmActivity : AppCompatActivity() {
 
-    companion object {
-        fun getStartIntent(context: Context): Intent = Intent(context, CreateAlarmActivity::class.java)
-    }
-
     private val log = Logger.getLogger(MainViewModel::class.java.name)
     private lateinit var ui: ActivityCreateAlarmBinding
     private lateinit var viewModel: CreateAlarmViewModel
