@@ -1,6 +1,6 @@
 # MyAlarm
 
-Стек: Kotlin, MVVM, AlarmManager, Dagger2, RxJava, Room, Retrofit, HttpLoggingInterceptor, SheetDb Api.
+Стек: Kotlin, MVVM, AlarmManager, Dagger2, RxJava3, Room, Retrofit, HttpLoggingInterceptor, SheetDb Api.
 
 Пет проект для изучения работы с AlarmManager.
 
