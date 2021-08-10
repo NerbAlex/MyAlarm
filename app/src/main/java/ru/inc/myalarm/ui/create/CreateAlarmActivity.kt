@@ -1,9 +1,6 @@
 package ru.inc.myalarm.ui.create
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -11,12 +8,10 @@ import ru.inc.myalarm.R
 import ru.inc.myalarm.databinding.ActivityCreateAlarmBinding
 import ru.inc.myalarm.extensions.lifecycle
 import ru.inc.myalarm.model.entity.room.AlarmRoom
-import ru.inc.myalarm.model.entity.ui.Alarm
 import ru.inc.myalarm.view_model.AppState
 import ru.inc.myalarm.view_model.create.CreateAlarmViewModel
 import ru.inc.myalarm.view_model.main.MainViewModel
 import java.util.*
-import java.util.concurrent.TimeUnit
 import java.util.logging.Logger
 
 class CreateAlarmActivity : AppCompatActivity() {

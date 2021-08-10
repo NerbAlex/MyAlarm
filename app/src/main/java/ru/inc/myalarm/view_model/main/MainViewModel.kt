@@ -2,7 +2,6 @@ package ru.inc.myalarm.view_model.main
 
 import ru.inc.myalarm.MyApp
 import ru.inc.myalarm.extensions.viewModel
-import ru.inc.myalarm.model.entity.ui.Alarm
 import ru.inc.myalarm.view_model.AppState
 import ru.inc.myalarm.view_model.BaseViewModel
 import java.util.logging.Logger
@@ -16,11 +15,13 @@ class MainViewModel : BaseViewModel<AppState.MainViewState>() {
     private val log = Logger.getLogger(MainViewModel::class.java.name)
 
     init {
+        log.viewModel("init")
         MyApp.instance.appComponent.inject(this)
     }
 
+
     override fun startViewModel() {
-        log.viewModel("startViewModel")
+//        log.viewModel("startViewModel")
 
         compositeDisposable.add(repository.getData().subscribe({
             if (it.isNotEmpty()) {
@@ -29,5 +30,6 @@ class MainViewModel : BaseViewModel<AppState.MainViewState>() {
                 mutableLiveData.postValue(AppState.MainViewState.FirstStart)
             }
         }, { it.printStackTrace() }))
+        return super.startViewModel()
     }
 }
