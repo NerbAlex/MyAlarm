@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import ru.inc.myalarm.R
 import ru.inc.myalarm.databinding.ActivityCreateAlarmBinding
 import ru.inc.myalarm.extensions.lifecycle
+import ru.inc.myalarm.extensions.viewModel
 import ru.inc.myalarm.model.entity.ConstRepeatStatus
 import ru.inc.myalarm.model.entity.room.AlarmRoom
 import ru.inc.myalarm.view_model.AppState
@@ -94,7 +95,10 @@ class CreateAlarmActivity : AppCompatActivity() {
 
     private fun renderData(state: AppState.CreateAlarmViewState) {
         when (state) {
-            is AppState.CreateAlarmViewState.AlarmCreated -> finish()
+            is AppState.CreateAlarmViewState.AlarmCreated -> {
+                log.viewModel("AlarmCreated")
+                finish()}
+
 
             is AppState.CreateAlarmViewState.Error -> {
                 Toast.makeText(this, getString(R.string.error_state), Toast.LENGTH_LONG).show()

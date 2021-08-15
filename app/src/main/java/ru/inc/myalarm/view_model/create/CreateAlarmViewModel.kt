@@ -33,12 +33,14 @@ class CreateAlarmViewModel : BaseViewModel<AppState.CreateAlarmViewState>() {
         log.viewModel("createAlarm")
 
         compositeDisposable.add(repository.saveAlarm(alarm).subscribe({
+            log.viewModel("subscribe")
             mutableLiveData.postValue(AppState.CreateAlarmViewState.AlarmCreated)
             val currentAlarm = Alarm(
                 name = alarm.name,
                 date = Date(alarm.date).toMyFormat(),
                 changeLongDate = alarm.date,
-                repeatStatus = ConstRepeatStatus.checkRepeat(alarm.repeatStatus)
+                repeatStatus = ConstRepeatStatus.checkRepeat(alarm.repeatStatus),
+                requestCode = alarm.requestCode
             )
             when (alarm.repeatStatus) {
                 ConstRepeatStatus.REPEAT_NO -> { alarmService.saveOneAlarm(currentAlarm) }
