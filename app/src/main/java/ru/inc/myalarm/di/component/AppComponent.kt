@@ -1,6 +1,7 @@
 package ru.inc.myalarm.di.component
 
 import dagger.Component
+import ru.inc.myalarm.alarm_manager.receiver.AlarmReceiver
 import ru.inc.myalarm.di.module.AlarmMainModule
 import ru.inc.myalarm.di.module.main.AppModule
 import ru.inc.myalarm.di.module.main.DataBaseModule
@@ -20,4 +21,5 @@ import javax.inject.Singleton
 interface AppComponent {
     fun createSubComponent(): CreateSubComponent
     fun inject(mainViewModel: MainViewModel)
+    fun inject(alarmReceiver: AlarmReceiver)
 }

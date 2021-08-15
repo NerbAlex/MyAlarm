@@ -6,13 +6,18 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.os.Bundle
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import ru.inc.myalarm.R
 import ru.inc.myalarm.alarm_manager.AlarmConstants
+import ru.inc.myalarm.extensions.viewModel
 import ru.inc.myalarm.model.entity.ui.Alarm
+import java.util.logging.Logger
 
 class AlarmReceiver : BroadcastReceiver() {
+
+    private val log = Logger.getLogger(AlarmReceiver::class.java.name)
 
     companion object {
         const val CHANNEL_ID = "some_channel_idididi777"
@@ -20,18 +25,22 @@ class AlarmReceiver : BroadcastReceiver() {
     }
 
     override fun onReceive(context: Context, intent: Intent) {
-        val alarm = intent.getParcelableExtra<Alarm>(AlarmConstants.EXTRA_ALARM_ENTITY)
+        val bundle = intent.getParcelableExtra<Bundle>(AlarmConstants.EXTRA_ALARM_ENTITY)
+        val alarm = bundle?.getParcelable<Alarm>(AlarmConstants.EXTRA_ALARM_ENTITY)
+
+        log.viewModel("onReceive intent: ${alarm}")
         when(intent.action) {
             AlarmConstants.ACTION_SET_ONE -> { showNotification(context, alarm) }
+            AlarmConstants.ACTION_SET_REPETITIVE -> {}
         }
     }
 
     private fun showNotification(context: Context, alarm: Alarm?) {
-        //TODO fix null in alarm
         val notificationBuilder =
             NotificationCompat.Builder(context, CHANNEL_ID).apply {
                 setSmallIcon(R.drawable.ic_launcher_background)
-                setContentTitle(alarm?.name.toString())
+                setContentTitle("Уведомление")
+                setContentText(alarm?.name)
                 priority = NotificationCompat.PRIORITY_DEFAULT
             }
 

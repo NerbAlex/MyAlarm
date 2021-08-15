@@ -5,15 +5,19 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.os.Bundle
 import ru.inc.myalarm.alarm_manager.AlarmConstants
 import ru.inc.myalarm.alarm_manager.receiver.AlarmReceiver
+import ru.inc.myalarm.extensions.viewModel
 import ru.inc.myalarm.model.entity.ui.Alarm
 import ru.inc.myalarm.model.repositories.AlarmServiceChange
 import ru.inc.myalarm.model.repositories.AlarmServiceCreate
+import java.util.logging.Logger
 
 class AlarmService(private val context: Context) : AlarmServiceChange,
     AlarmServiceCreate {
 
+    private val log = Logger.getLogger(AlarmService::class.java.name)
     private val alarmManager = context.applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
     override fun deleteAlarm(time: Long) {
@@ -25,8 +29,11 @@ class AlarmService(private val context: Context) : AlarmServiceChange,
             alarm.changeLongDate,
             getPendingIntent(
                 getIntent().apply {
+                    log.viewModel("apply : ${alarm.name}")
                     action = AlarmConstants.ACTION_SET_ONE
-                    putExtra(AlarmConstants.EXTRA_ALARM_ENTITY, alarm)
+                    val bundle = Bundle()
+                    bundle.putParcelable(AlarmConstants.EXTRA_ALARM_ENTITY, alarm)
+                    putExtra(AlarmConstants.EXTRA_ALARM_ENTITY, bundle)
                 }, alarm.requestCode)
         )
     }
