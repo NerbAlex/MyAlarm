@@ -23,23 +23,13 @@ class MainViewModel : BaseViewModel<AppState.MainViewState>() {
     }
 
     fun deleteAlarm(alarm: Alarm?) {
-        alarm.let {
-            var currentAlarm = Alarm(
-                id = 0,
-                name = it!!.name,
-                date = it.date,
-                requestCode = it.requestCode,
-                repeatStatus = it.repeatStatus,
-                changeLongDate = it.changeLongDate
-            )
-            alarmServiceChange.deleteAlarm(currentAlarm)
+        alarm?.let {
+            alarmServiceChange.deleteAlarm(it)
             compositeDisposable.add(
                 repository.deleteAlarm(it).subscribe {
                     startViewModel()
                 })
         }
-
-
     }
 
     override fun startViewModel() {
