@@ -27,11 +27,11 @@ class AlarmReceiver : BroadcastReceiver() {
     }
 
     private fun showNotification(context: Context, alarm: Alarm?) {
+        //TODO fix null in alarm
         val notificationBuilder =
             NotificationCompat.Builder(context, CHANNEL_ID).apply {
                 setSmallIcon(R.drawable.ic_launcher_background)
-                setContentTitle("Уведомление")
-                setContentText(alarm?.name)
+                setContentTitle(alarm?.name.toString())
                 priority = NotificationCompat.PRIORITY_DEFAULT
             }
 

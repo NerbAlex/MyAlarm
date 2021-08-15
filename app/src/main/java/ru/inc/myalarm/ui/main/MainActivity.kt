@@ -11,14 +11,18 @@ import ru.inc.myalarm.databinding.ActivityMainBinding
 import ru.inc.myalarm.model.entity.ConstRepeatStatus
 import ru.inc.myalarm.ui.create.CreateAlarmActivity
 import ru.inc.myalarm.view_model.AppState
+import ru.inc.myalarm.view_model.create.CreateAlarmViewModel
 import ru.inc.myalarm.view_model.main.MainViewModel
 import java.lang.IllegalArgumentException
+import java.util.logging.Logger
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var ui: ActivityMainBinding
     private lateinit var viewModel: MainViewModel
     private lateinit var adapter: MainAdapter
+
+    private val log = Logger.getLogger(MainActivity::class.java.name)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +37,11 @@ class MainActivity : AppCompatActivity() {
     private fun initListeners() {
         ui.btnCreateAlert.setOnClickListener {
             startActivity(Intent(this, CreateAlarmActivity::class.java)) }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.startViewModel()
     }
 
     @SuppressLint("SetTextI18n")
@@ -52,7 +61,6 @@ class MainActivity : AppCompatActivity() {
     private fun initViewModel() {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         viewModel.getData().observe(this) { renderData(it) }
-        viewModel.startViewModel()
     }
 
     private fun renderData(state: AppState.MainViewState) {

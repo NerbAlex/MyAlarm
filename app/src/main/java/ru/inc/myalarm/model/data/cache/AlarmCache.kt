@@ -12,7 +12,7 @@ import ru.inc.myalarm.model.repositories.AlarmLocalDataSource
 import java.util.*
 
 
-class AlarmCache(val db: DataBase) : AlarmLocalDataSource {
+class AlarmCache(private val db: DataBase) : AlarmLocalDataSource {
 
     override fun getAlarmList(): Single<List<Alarm>> = Single.fromCallable {
         db.alarmDao().getAllAlarm().map { localAlarm ->

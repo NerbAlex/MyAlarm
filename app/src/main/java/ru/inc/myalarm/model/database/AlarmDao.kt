@@ -3,7 +3,6 @@ package ru.inc.myalarm.model.database
 import androidx.room.*
 import io.reactivex.rxjava3.core.Completable
 import ru.inc.myalarm.model.entity.room.AlarmRoom
-import ru.inc.myalarm.model.entity.ui.Alarm
 
 @Dao
 interface AlarmDao {
