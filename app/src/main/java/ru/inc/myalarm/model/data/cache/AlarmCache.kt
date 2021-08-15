@@ -21,7 +21,8 @@ class AlarmCache(val db: DataBase) : AlarmLocalDataSource {
                 id = localAlarm.id.toInt(),
                 changeLongDate = localAlarm.date,
                 date = Date(localAlarm.date).toMyFormat(),
-                repeatStatus = mapRepeatStatus(localAlarm.repeatStatus)
+                repeatStatus = mapRepeatStatus(localAlarm.repeatStatus),
+                requestCode = localAlarm.requestCode
             )
         }
     }.subscribeOn(Schedulers.io())
@@ -29,29 +30,5 @@ class AlarmCache(val db: DataBase) : AlarmLocalDataSource {
     override fun saveAlarm(alarm: AlarmRoom): Completable =
         db.alarmDao().addAlarm(alarm).subscribeOn(Schedulers.io())
 
-    private fun mapRepeatStatus(repeatStatus: Int): String = when (repeatStatus) {
-        ConstRepeatStatus.REPEAT_NO -> {
-            "нет"
-        }
-        ConstRepeatStatus.REPEAT_30_MINUTES -> {
-            "30 минут"
-        }
-        ConstRepeatStatus.REPEAT_ONE_DAY -> {
-            "1 день"
-        }
-        ConstRepeatStatus.REPEAT_ONE_WEAK -> {
-            "1 неделю"
-        }
-        ConstRepeatStatus.REPEAT_ONE_MINUTES -> {
-            "1 минуту"
-        }
-        ConstRepeatStatus.REPEAT_3_HOUR -> {
-            "3 часа"
-        }
-        else -> {
-            throw IllegalArgumentException("unknown status repeat")
-        }
-    }
-
-
+    private fun mapRepeatStatus(repeatStatus: Int): String = ConstRepeatStatus.checkRepeat(repeatStatus)
 }

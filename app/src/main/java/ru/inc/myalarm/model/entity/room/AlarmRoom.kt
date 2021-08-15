@@ -9,5 +9,7 @@ class AlarmRoom(
     val id: Long = 0,
     val name: String,
     val date: Long,
-    val repeatStatus: Int
-)
+    val repeatStatus: Int,
+    val requestCode: Int
+) {
+}

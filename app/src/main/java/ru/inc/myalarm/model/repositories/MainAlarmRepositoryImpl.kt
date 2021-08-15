@@ -4,7 +4,7 @@ import io.reactivex.rxjava3.core.Single
 import ru.inc.myalarm.model.entity.ui.Alarm
 import ru.inc.myalarm.view_model.main.MainAlarmRepository
 
-class MainAlarmRepositoryImpl(val localDataSource: AlarmLocalDataSource): MainAlarmRepository {
+class MainAlarmRepositoryImpl(private val localDataSource: AlarmLocalDataSource): MainAlarmRepository {
 
     override fun getData(): Single<List<Alarm>> = localDataSource.getAlarmList()
 

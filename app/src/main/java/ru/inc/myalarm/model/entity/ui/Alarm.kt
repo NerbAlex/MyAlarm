@@ -9,5 +9,7 @@ data class Alarm(
     val name: String,
     val date: String,
     val repeatStatus: String,
-    var changeLongDate: Long
-) : Parcelable
+    var changeLongDate: Long,
+    val requestCode: Int
+) : Parcelable {
+}
