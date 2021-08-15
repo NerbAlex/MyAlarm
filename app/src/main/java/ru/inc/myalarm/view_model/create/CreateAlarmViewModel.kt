@@ -38,11 +38,11 @@ class CreateAlarmViewModel : BaseViewModel<AppState.CreateAlarmViewState>() {
                 name = alarm.name,
                 date = Date(alarm.date).toMyFormat(),
                 changeLongDate = alarm.date,
-                repeatStatus = ConstRepeatStatus.checkRepeat(alarm.repeatStatus),
+                repeatStatus = ConstRepeatStatus.mapToString(alarm.repeatStatus),
                 requestCode = alarm.requestCode
             )
             when (alarm.repeatStatus) {
-                ConstRepeatStatus.REPEAT_NO -> {
+                ConstRepeatStatus.REPEAT_NO_I -> {
                     log.viewModel(alarm.name)
                     alarmService.saveOneAlarm(currentAlarm) }
 

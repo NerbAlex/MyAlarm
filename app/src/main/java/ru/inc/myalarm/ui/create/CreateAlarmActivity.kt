@@ -51,7 +51,7 @@ class CreateAlarmActivity : AppCompatActivity() {
         ui.btnDateAlarm.setOnClickListener { setAlarm() }
         ui.ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
             if (fromUser) {
-                ui.txtRepeatAlert.text = ConstRepeatStatus.checkRepeat(rating.toInt())
+                ui.txtRepeatAlert.text = ConstRepeatStatus.mapToString(rating.toInt())
             }
         }
     }

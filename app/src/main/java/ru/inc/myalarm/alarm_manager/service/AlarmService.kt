@@ -5,7 +5,6 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.os.Bundle
 import ru.inc.myalarm.alarm_manager.AlarmConstants
 import ru.inc.myalarm.alarm_manager.receiver.AlarmReceiver
 import ru.inc.myalarm.extensions.viewModel
@@ -20,8 +19,12 @@ class AlarmService(private val context: Context) : AlarmServiceChange,
     private val log = Logger.getLogger(AlarmService::class.java.name)
     private val alarmManager = context.applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-    override fun deleteAlarm(time: Long) {
-
+    override fun deleteAlarm(alarm: Alarm) {
+        log.viewModel("deleteAlarm $alarm")
+        alarmManager.cancel(getPendingIntent(getIntent().apply {
+            action = AlarmConstants.ACTION_SET_ONE
+            putExtra(AlarmConstants.EXTRA_ALARM_ENTITY, alarm.name)
+        }, alarm.requestCode))
     }
 
     override fun saveOneAlarm(alarm: Alarm) {
@@ -29,12 +32,14 @@ class AlarmService(private val context: Context) : AlarmServiceChange,
             alarm.changeLongDate,
             getPendingIntent(
                 getIntent().apply {
-                    log.viewModel("apply : ${alarm.name}")
+                    log.viewModel("apply : $alarm")
                     action = AlarmConstants.ACTION_SET_ONE
-                    val bundle = Bundle()
-                    bundle.putParcelable(AlarmConstants.EXTRA_ALARM_ENTITY, alarm)
-                    putExtra(AlarmConstants.EXTRA_ALARM_ENTITY, bundle)
-                }, alarm.requestCode)
+                    putExtra(AlarmConstants.EXTRA_ALARM_ENTITY, alarm.name)
+//                    val bundle = Bundle()
+//                    bundle.putParcelable(AlarmConstants.EXTRA_ALARM_ENTITY, alarm) //TODO Попробовать класс без переопределенного хешкода
+//                    putExtra(AlarmConstants.EXTRA_ALARM_ENTITY, bundle)
+                }, alarm.requestCode
+            )
         )
     }
 

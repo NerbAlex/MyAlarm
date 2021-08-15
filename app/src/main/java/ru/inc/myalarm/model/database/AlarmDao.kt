@@ -11,7 +11,7 @@ interface AlarmDao {
     fun addAlarm(alarm: AlarmRoom): Completable
 
     @Delete(entity = AlarmRoom::class)
-    fun deleteAlarm(alarm: AlarmRoom)
+    fun deleteAlarm(alarm: AlarmRoom): Completable
 
     @Delete(entity = AlarmRoom::class)
     fun deleteAllAlarm(alarmList: List<AlarmRoom>)

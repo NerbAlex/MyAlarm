@@ -27,8 +27,17 @@ class AlarmCache(private val db: DataBase) : AlarmLocalDataSource {
         }
     }.subscribeOn(Schedulers.io())
 
-    override fun saveAlarm(alarm: AlarmRoom): Completable =
-        db.alarmDao().addAlarm(alarm).subscribeOn(Schedulers.io())
+    override fun saveAlarm(alarm: AlarmRoom) = db.alarmDao().addAlarm(alarm).subscribeOn(Schedulers.io())
 
-    private fun mapRepeatStatus(repeatStatus: Int): String = ConstRepeatStatus.checkRepeat(repeatStatus)
+    override fun deleteAlarm(alarm: Alarm) = db.alarmDao().deleteAlarm(
+        AlarmRoom(
+            id = alarm.id.toLong(),
+            name = alarm.name,
+            date = alarm.changeLongDate,
+            repeatStatus = ConstRepeatStatus.mapToInt(alarm.repeatStatus),
+            requestCode = alarm.requestCode
+        )
+    ).subscribeOn(Schedulers.io())
+
+    private fun mapRepeatStatus(repeatStatus: Int): String = ConstRepeatStatus.mapToString(repeatStatus)
 }

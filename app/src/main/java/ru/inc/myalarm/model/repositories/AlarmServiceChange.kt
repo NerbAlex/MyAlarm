@@ -1,6 +1,8 @@
 package ru.inc.myalarm.model.repositories
 
+import ru.inc.myalarm.model.entity.ui.Alarm
+
 interface AlarmServiceChange {
 
-    fun deleteAlarm(time: Long)
+    fun deleteAlarm(alarm: Alarm)
 }

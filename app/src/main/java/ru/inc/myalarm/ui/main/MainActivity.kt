@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import ru.inc.myalarm.R
 import ru.inc.myalarm.databinding.ActivityMainBinding
 import ru.inc.myalarm.model.entity.ConstRepeatStatus
+import ru.inc.myalarm.model.entity.ui.Alarm
 import ru.inc.myalarm.ui.create.CreateAlarmActivity
 import ru.inc.myalarm.view_model.AppState
 import ru.inc.myalarm.view_model.create.CreateAlarmViewModel
@@ -21,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var ui: ActivityMainBinding
     private lateinit var viewModel: MainViewModel
     private lateinit var adapter: MainAdapter
+    private var currentAlarm: Alarm? = null
 
     private val log = Logger.getLogger(MainActivity::class.java.name)
 
@@ -36,7 +38,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun initListeners() {
         ui.btnCreateAlert.setOnClickListener {
-            startActivity(Intent(this, CreateAlarmActivity::class.java)) }
+            startActivity(Intent(this, CreateAlarmActivity::class.java))
+        }
+
+        ui.btnDeleteCurrent.setOnClickListener {
+            viewModel.deleteAlarm(currentAlarm)
+        }
     }
 
     override fun onStart() {
@@ -50,6 +57,8 @@ class MainActivity : AppCompatActivity() {
         ui.recycler.adapter = adapter
 
         adapter.lmdClickListener = { alarm ->
+            currentAlarm = alarm
+
             with(ui) {
                 txtAlertDate.text = alarm.date
                 txtAlertName.text = alarm.name

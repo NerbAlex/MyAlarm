@@ -7,4 +7,6 @@ import ru.inc.myalarm.view_model.main.MainAlarmRepository
 class MainAlarmRepositoryImpl(private val localDataSource: AlarmLocalDataSource): MainAlarmRepository {
 
     override fun getData(): Single<List<Alarm>> = localDataSource.getAlarmList()
+
+    override fun deleteAlarm(alarm: Alarm) = localDataSource.deleteAlarm(alarm)
 }

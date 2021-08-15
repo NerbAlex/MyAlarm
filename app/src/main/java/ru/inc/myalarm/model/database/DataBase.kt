@@ -9,7 +9,7 @@ import ru.inc.myalarm.model.entity.ui.Alarm
 abstract class DataBase: RoomDatabase() {
 
     companion object{
-        const val NAME = "database_my_alarm_3"
+        const val NAME = "database_my_alarm_4"
     }
 
     abstract fun alarmDao(): AlarmDao
