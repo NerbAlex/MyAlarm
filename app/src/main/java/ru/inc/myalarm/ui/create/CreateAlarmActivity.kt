@@ -12,8 +12,8 @@ import ru.inc.myalarm.extensions.lifecycle
 import ru.inc.myalarm.extensions.viewModel
 import ru.inc.myalarm.model.entity.ConstRepeatStatus
 import ru.inc.myalarm.model.entity.room.AlarmRoom
-import ru.inc.myalarm.view_model.AppState
 import ru.inc.myalarm.view_model.create.CreateAlarmViewModel
+import ru.inc.myalarm.view_model.create.CreateAlarmViewState
 import ru.inc.myalarm.view_model.main.MainViewModel
 import java.util.*
 import java.util.logging.Logger
@@ -93,14 +93,14 @@ class CreateAlarmActivity : AppCompatActivity() {
         viewModel.startViewModel()
     }
 
-    private fun renderData(state: AppState.CreateAlarmViewState) {
+    private fun renderData(state: CreateAlarmViewState) {
         when (state) {
-            is AppState.CreateAlarmViewState.AlarmCreated -> {
+            is CreateAlarmViewState.AlarmCreated -> {
                 log.viewModel("AlarmCreated")
                 finish()}
 
 
-            is AppState.CreateAlarmViewState.Error -> {
+            is CreateAlarmViewState.Error -> {
                 Toast.makeText(this, getString(R.string.error_state), Toast.LENGTH_LONG).show()
             }
         }

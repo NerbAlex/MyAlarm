@@ -2,19 +2,16 @@ package ru.inc.myalarm.ui.main
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import ru.inc.myalarm.R
 import ru.inc.myalarm.databinding.ActivityMainBinding
-import ru.inc.myalarm.model.entity.ConstRepeatStatus
 import ru.inc.myalarm.model.entity.ui.Alarm
 import ru.inc.myalarm.ui.create.CreateAlarmActivity
-import ru.inc.myalarm.view_model.AppState
-import ru.inc.myalarm.view_model.create.CreateAlarmViewModel
 import ru.inc.myalarm.view_model.main.MainViewModel
-import java.lang.IllegalArgumentException
+import ru.inc.myalarm.view_model.main.MainViewState
 import java.util.logging.Logger
 
 class MainActivity : AppCompatActivity() {
@@ -72,17 +69,17 @@ class MainActivity : AppCompatActivity() {
         viewModel.getData().observe(this) { renderData(it) }
     }
 
-    private fun renderData(state: AppState.MainViewState) {
+    private fun renderData(state: MainViewState) {
         when (state) {
-            is AppState.MainViewState.Success -> {
+            is MainViewState.Success -> {
                 adapter.list = state.list
             }
 
-            is AppState.MainViewState.FirstStart -> {
+            is MainViewState.FirstStart -> {
                 Toast.makeText(this, getString(R.string.first_start_state), Toast.LENGTH_LONG).show()
             }
 
-            is AppState.MainViewState.Error -> {
+            is MainViewState.Error -> {
                 Toast.makeText(this, getString(R.string.error_state), Toast.LENGTH_LONG).show()
             }
         }

@@ -4,12 +4,11 @@ import ru.inc.myalarm.MyApp
 import ru.inc.myalarm.extensions.viewModel
 import ru.inc.myalarm.model.entity.ui.Alarm
 import ru.inc.myalarm.model.repositories.AlarmServiceChange
-import ru.inc.myalarm.view_model.AppState
 import ru.inc.myalarm.view_model.BaseViewModel
 import java.util.logging.Logger
 import javax.inject.Inject
 
-class MainViewModel : BaseViewModel<AppState.MainViewState>() {
+class MainViewModel : BaseViewModel<MainViewState>() {
 
     @Inject
     lateinit var repository: MainAlarmRepository
@@ -38,9 +37,9 @@ class MainViewModel : BaseViewModel<AppState.MainViewState>() {
         compositeDisposable.clear()
         compositeDisposable.add(repository.getData().subscribe({
             if (it.isNotEmpty()) {
-                mutableLiveData.postValue(AppState.MainViewState.Success(it))
+                mutableLiveData.postValue(MainViewState.Success(it))
             } else {
-                mutableLiveData.postValue(AppState.MainViewState.FirstStart)
+                mutableLiveData.postValue(MainViewState.FirstStart)
             }
         }, { it.printStackTrace() }))
     }

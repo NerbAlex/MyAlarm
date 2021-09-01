@@ -7,13 +7,12 @@ import ru.inc.myalarm.model.entity.ConstRepeatStatus
 import ru.inc.myalarm.model.entity.room.AlarmRoom
 import ru.inc.myalarm.model.entity.ui.Alarm
 import ru.inc.myalarm.model.repositories.AlarmServiceCreate
-import ru.inc.myalarm.view_model.AppState
 import ru.inc.myalarm.view_model.BaseViewModel
 import java.util.*
 import java.util.logging.Logger
 import javax.inject.Inject
 
-class CreateAlarmViewModel : BaseViewModel<AppState.CreateAlarmViewState>() {
+class CreateAlarmViewModel : BaseViewModel<CreateAlarmViewState>() {
 
     private val log = Logger.getLogger(CreateAlarmViewModel::class.java.name)
 
@@ -47,7 +46,7 @@ class CreateAlarmViewModel : BaseViewModel<AppState.CreateAlarmViewState>() {
                     alarmService.saveOneAlarm(currentAlarm) }
 
             }
-            mutableLiveData.postValue(AppState.CreateAlarmViewState.AlarmCreated)
+            mutableLiveData.postValue(CreateAlarmViewState.AlarmCreated)
         }, {
             it.printStackTrace()
         }))

@@ -9,7 +9,7 @@ import ru.inc.myalarm.model.entity.ui.Alarm
 import ru.inc.myalarm.view_model.main.MainViewModel
 import java.util.logging.Logger
 
-abstract class BaseViewModel<T : AppState>(
+abstract class BaseViewModel<T>(
     protected val mutableLiveData: MutableLiveData<T> = MutableLiveData(),
     protected val compositeDisposable: CompositeDisposable = CompositeDisposable()
 ): ViewModel() {
