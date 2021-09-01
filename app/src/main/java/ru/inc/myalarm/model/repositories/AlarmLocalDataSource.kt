@@ -8,4 +8,5 @@ import ru.inc.myalarm.model.entity.ui.Alarm
 interface AlarmLocalDataSource {
     fun getAlarmList(): Single<List<Alarm>>
     fun saveAlarm(alarm: AlarmRoom): Completable
+    fun deleteAlarm(alarm: Alarm): Completable
 }

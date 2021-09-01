@@ -1,4 +1,5 @@
 package ru.inc.myalarm.ui.main
+
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
@@ -7,18 +8,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import ru.inc.myalarm.R
 import ru.inc.myalarm.databinding.ActivityMainBinding
+import ru.inc.myalarm.model.entity.ui.Alarm
 import ru.inc.myalarm.ui.create.CreateAlarmActivity
-import ru.inc.myalarm.view_model.AppState
 import ru.inc.myalarm.view_model.main.MainViewModel
+import ru.inc.myalarm.view_model.main.MainViewState
 import java.util.logging.Logger
 
 class MainActivity : AppCompatActivity() {
 
-    private val log = Logger.getLogger(MainActivity::class.java.name)
-
     private lateinit var ui: ActivityMainBinding
     private lateinit var viewModel: MainViewModel
     private lateinit var adapter: MainAdapter
+    private var currentAlarm: Alarm? = null
+
+    private val log = Logger.getLogger(MainActivity::class.java.name)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +35,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun initListeners() {
         ui.btnCreateAlert.setOnClickListener {
-            startActivity(Intent(this, CreateAlarmActivity::class.java)) }
+            startActivity(Intent(this, CreateAlarmActivity::class.java))
+        }
+
+        ui.btnDeleteCurrent.setOnClickListener {
+            viewModel.deleteAlarm(currentAlarm)
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.startViewModel()
     }
 
     @SuppressLint("SetTextI18n")
@@ -41,10 +54,12 @@ class MainActivity : AppCompatActivity() {
         ui.recycler.adapter = adapter
 
         adapter.lmdClickListener = { alarm ->
+            currentAlarm = alarm
+
             with(ui) {
                 txtAlertDate.text = alarm.date
                 txtAlertName.text = alarm.name
-                txtRepeatAlert.text = "${getString(R.string.repeat)} ${alarm.repeatStatus}"
+                txtRepeatAlert.text = "Повтор: ${alarm.repeatStatus}"
             }
         }
     }
@@ -52,20 +67,19 @@ class MainActivity : AppCompatActivity() {
     private fun initViewModel() {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         viewModel.getData().observe(this) { renderData(it) }
-        viewModel.startViewModel()
     }
 
-    private fun renderData(state: AppState.MainViewState) {
+    private fun renderData(state: MainViewState) {
         when (state) {
-            is AppState.MainViewState.Success -> {
+            is MainViewState.Success -> {
                 adapter.list = state.list
             }
 
-            is AppState.MainViewState.FirstStart -> {
+            is MainViewState.FirstStart -> {
                 Toast.makeText(this, getString(R.string.first_start_state), Toast.LENGTH_LONG).show()
             }
 
-            is AppState.MainViewState.Error -> {
+            is MainViewState.Error -> {
                 Toast.makeText(this, getString(R.string.error_state), Toast.LENGTH_LONG).show()
             }
         }

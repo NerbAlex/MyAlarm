@@ -12,7 +12,7 @@ import ru.inc.myalarm.model.repositories.AlarmLocalDataSource
 import java.util.*
 
 
-class AlarmCache(val db: DataBase) : AlarmLocalDataSource {
+class AlarmCache(private val db: DataBase) : AlarmLocalDataSource {
 
     override fun getAlarmList(): Single<List<Alarm>> = Single.fromCallable {
         db.alarmDao().getAllAlarm().map { localAlarm ->
@@ -21,37 +21,23 @@ class AlarmCache(val db: DataBase) : AlarmLocalDataSource {
                 id = localAlarm.id.toInt(),
                 changeLongDate = localAlarm.date,
                 date = Date(localAlarm.date).toMyFormat(),
-                repeatStatus = mapRepeatStatus(localAlarm.repeatStatus)
+                repeatStatus = mapRepeatStatus(localAlarm.repeatStatus),
+                requestCode = localAlarm.requestCode
             )
         }
     }.subscribeOn(Schedulers.io())
 
-    override fun saveAlarm(alarm: AlarmRoom): Completable =
-        db.alarmDao().addAlarm(alarm).subscribeOn(Schedulers.io())
+    override fun saveAlarm(alarm: AlarmRoom) = db.alarmDao().addAlarm(alarm).subscribeOn(Schedulers.io())
 
-    private fun mapRepeatStatus(repeatStatus: Int): String = when (repeatStatus) {
-        ConstRepeatStatus.REPEAT_NO -> {
-            "нет"
-        }
-        ConstRepeatStatus.REPEAT_30_MINUTES -> {
-            "30 минут"
-        }
-        ConstRepeatStatus.REPEAT_ONE_DAY -> {
-            "1 день"
-        }
-        ConstRepeatStatus.REPEAT_ONE_WEAK -> {
-            "1 неделю"
-        }
-        ConstRepeatStatus.REPEAT_ONE_MINUTES -> {
-            "1 минуту"
-        }
-        ConstRepeatStatus.REPEAT_3_HOUR -> {
-            "3 часа"
-        }
-        else -> {
-            throw IllegalArgumentException("unknown status repeat")
-        }
-    }
+    override fun deleteAlarm(alarm: Alarm) = db.alarmDao().deleteAlarm(
+        AlarmRoom(
+            id = alarm.id.toLong(),
+            name = alarm.name,
+            date = alarm.changeLongDate,
+            repeatStatus = ConstRepeatStatus.mapToInt(alarm.repeatStatus),
+            requestCode = alarm.requestCode
+        )
+    ).subscribeOn(Schedulers.io())
 
-
+    private fun mapRepeatStatus(repeatStatus: Int): String = ConstRepeatStatus.mapToString(repeatStatus)
 }
