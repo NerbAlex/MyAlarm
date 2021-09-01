@@ -1,33 +1,23 @@
 package ru.inc.myalarm.view_model.create
 
-import ru.inc.myalarm.MyApp
 import ru.inc.myalarm.extensions.toMyFormat
 import ru.inc.myalarm.extensions.viewModel
 import ru.inc.myalarm.model.entity.ConstRepeatStatus
 import ru.inc.myalarm.model.entity.room.AlarmRoom
 import ru.inc.myalarm.model.entity.ui.Alarm
 import ru.inc.myalarm.model.repositories.AlarmServiceCreate
-import ru.inc.myalarm.view_model.AppState
 import ru.inc.myalarm.view_model.BaseViewModel
 import java.util.*
 import java.util.logging.Logger
 import javax.inject.Inject
 
-class CreateAlarmViewModel : BaseViewModel<AppState.CreateAlarmViewState>() {
+
+class CreateAlarmViewModel @Inject constructor(
+    private val repository: CreateAlarmRepository,
+    private val alarmService: AlarmServiceCreate
+) : BaseViewModel<CreateAlarmViewState>() {
 
     private val log = Logger.getLogger(CreateAlarmViewModel::class.java.name)
-
-    @Inject
-    lateinit var repository: CreateAlarmRepository
-    @Inject
-    lateinit var alarmService: AlarmServiceCreate
-
-    override fun startViewModel() {
-        log.viewModel("startViewModel")
-        MyApp.instance.initCreateSubComponent().inject(this)
-
-        super.startViewModel()
-    }
 
     fun createAlarm(alarm: AlarmRoom) {
         log.viewModel("createAlarm")
@@ -44,18 +34,12 @@ class CreateAlarmViewModel : BaseViewModel<AppState.CreateAlarmViewState>() {
             when (alarm.repeatStatus) {
                 ConstRepeatStatus.REPEAT_NO_I -> {
                     log.viewModel(alarm.name)
-                    alarmService.saveOneAlarm(currentAlarm) }
-
+                    alarmService.saveOneAlarm(currentAlarm)
+                }
             }
-            mutableLiveData.postValue(AppState.CreateAlarmViewState.AlarmCreated)
+            mutableLiveData.postValue(CreateAlarmViewState.AlarmCreated)
         }, {
             it.printStackTrace()
         }))
     }
-
-    override fun onCleared() {
-        MyApp.instance.destroyCreateSubComponent()
-        super.onCleared()
-    }
-
 }
