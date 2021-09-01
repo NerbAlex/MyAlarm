@@ -6,8 +6,10 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import ru.inc.myalarm.MyApp
 import ru.inc.myalarm.R
 import ru.inc.myalarm.databinding.ActivityCreateAlarmBinding
+import ru.inc.myalarm.di.factory.ConstFactory
 import ru.inc.myalarm.extensions.lifecycle
 import ru.inc.myalarm.extensions.viewModel
 import ru.inc.myalarm.model.entity.ConstRepeatStatus
@@ -17,15 +19,34 @@ import ru.inc.myalarm.view_model.create.CreateAlarmViewState
 import ru.inc.myalarm.view_model.main.MainViewModel
 import java.util.*
 import java.util.logging.Logger
+import javax.inject.Inject
+import javax.inject.Named
 import kotlin.random.Random
 
 class CreateAlarmActivity : AppCompatActivity() {
 
+    @Inject
+    @Named(ConstFactory.DETAILS)
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val viewModel: CreateAlarmViewModel by lazy { initViewModel() }
+
     private val log = Logger.getLogger(MainViewModel::class.java.name)
     private lateinit var ui: ActivityCreateAlarmBinding
-    private lateinit var viewModel: CreateAlarmViewModel
     private val alarm by lazy { createAlarm() }
     private var date: Long? = null
+
+    private fun initViewModel() = ViewModelProvider(this, viewModelFactory).get(CreateAlarmViewModel::class.java)
+
+    private fun observeData() {
+        MyApp.instance.initCreateSubComponent().inject(this)
+        viewModel.getData().observe(this) { renderData(it) }
+        viewModel.startViewModel()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        MyApp.instance.destroyCreateSubComponent()
+    }
 
     private fun createAlarm() = with(ui) {
         AlarmRoom(
@@ -36,14 +57,13 @@ class CreateAlarmActivity : AppCompatActivity() {
         )
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ui = ActivityCreateAlarmBinding.inflate(layoutInflater)
         setContentView(ui.root)
 
-        initViewModel()
         initListeners()
+        observeData()
     }
 
     private fun initListeners() {
@@ -87,17 +107,12 @@ class CreateAlarmActivity : AppCompatActivity() {
         }
     }
 
-    private fun initViewModel() {
-        viewModel = ViewModelProvider(this).get(CreateAlarmViewModel::class.java)
-        viewModel.getData().observe(this) { renderData(it) }
-        viewModel.startViewModel()
-    }
-
     private fun renderData(state: CreateAlarmViewState) {
         when (state) {
             is CreateAlarmViewState.AlarmCreated -> {
                 log.viewModel("AlarmCreated")
-                finish()}
+                finish()
+            }
 
 
             is CreateAlarmViewState.Error -> {

@@ -6,22 +6,31 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import ru.inc.myalarm.MyApp
 import ru.inc.myalarm.R
 import ru.inc.myalarm.databinding.ActivityMainBinding
+import ru.inc.myalarm.di.factory.ConstFactory
 import ru.inc.myalarm.model.entity.ui.Alarm
 import ru.inc.myalarm.ui.create.CreateAlarmActivity
 import ru.inc.myalarm.view_model.main.MainViewModel
 import ru.inc.myalarm.view_model.main.MainViewState
 import java.util.logging.Logger
+import javax.inject.Inject
+import javax.inject.Named
 
 class MainActivity : AppCompatActivity() {
 
+    @Inject
+    @Named(ConstFactory.MAIN)
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val viewModel: MainViewModel by lazy { initViewModel() }
+
     private lateinit var ui: ActivityMainBinding
-    private lateinit var viewModel: MainViewModel
     private lateinit var adapter: MainAdapter
     private var currentAlarm: Alarm? = null
 
     private val log = Logger.getLogger(MainActivity::class.java.name)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,8 +38,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(ui.root)
 
         initRecyclerView()
-        initViewModel()
         initListeners()
+        observeData()
+    }
+
+    private fun observeData() {
+        MyApp.instance.appComponent.inject(this)
+        viewModel.getData().observe(this) { renderData(it) }
     }
 
     private fun initListeners() {
@@ -64,10 +78,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun initViewModel() {
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        viewModel.getData().observe(this) { renderData(it) }
-    }
+    private fun initViewModel() = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
 
     private fun renderData(state: MainViewState) {
         when (state) {
